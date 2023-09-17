@@ -6,18 +6,6 @@ const logger = (req,res,next)=>{
 };
 
 const queryValidation = (req,res,next) =>{
-    const { action } = req.query;
-    if(!action){
-        return res.status(400).json({error:"action query is required"});
-    }
-
-    const list = ["create","read","delete","update"];
-    const isInclude =  list.includes(action);
-
-    if(!isInclude){
-        return res.status(400).json({error:"invalide action"});
-    }
-
     if(Object.keys(req.body).length === 0){
         return res.status(400).json({error:"request body is required"});
     }

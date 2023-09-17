@@ -36,7 +36,7 @@ const read = async(payload,client,db_config)=>{
 
         //read query
         const query = await collection.findOne(payload);
-
+        
         return query;
     }
     catch(err){
