@@ -15,7 +15,7 @@ This repository contains a simple API for performing CRUD (Create, Read, Update,
 
 ## API Endpoint
 
-- **GET /http://localhost:3000/book (Public)**: Retrieve data records.
+- **GET http://localhost:3000/book (Public)**: Retrieve data records.
 - **GET http://localhost:3000/key (public)**: Retrieve new API key.
 - **POST http://localhost:3000/book (API Key Required)**: Create a single/multiple data record.
 - **PUT http://localhost:3000/book (API Key Required)**: Update a specific data record.
