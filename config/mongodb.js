@@ -4,4 +4,9 @@ const db_config = {
     dbCollection : "book"
 }
 
-module.exports = db_config;
+const db_key = {
+    url : "mongodb://localhost:27017",
+    dbName : "db_book",
+    dbCollection : "key"
+}
+module.exports = { db_config, db_key };

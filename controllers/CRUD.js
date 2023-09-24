@@ -1,13 +1,14 @@
-const create = async (payload,client,db_config)=>{
-    try{
-        const dbName = db_config.dbName;
-        const dbCollection = db_config.dbCollection;
+const data = require("../config/mongodb");
+const {MongoClient} = require("mongodb");
+const client = new MongoClient(data.db_config.url);
 
+const create = async (payload)=>{
+    try{
         //establish connection and config
         await client.connect();
 
-        const db = client.db(dbName);
-        const collection = db.collection(dbCollection);
+        const db = client.db(data.db_config.dbname);
+        const collection = db.collection(data.db_config.dbCollection);
         //insert query
         if(Array.isArray(payload)){
             const query = await collection.insertMany(payload);
@@ -23,16 +24,13 @@ const create = async (payload,client,db_config)=>{
     }
 };
 
-const read = async(payload,client,db_config)=>{
+const read = async(payload)=>{
     try{
-        const dbName = db_config.dbName;
-        const dbCollection = db_config.dbCollection;
-
         //establish connection and config
         await client.connect();
 
-        const db = client.db(dbName);
-        const collection = db.collection(dbCollection);
+        const db = client.db(data.db_config.dbname);
+        const collection = db.collection(data.db_config.dbCollection);
 
         //read query
         const query = await collection.findOne(payload);
@@ -44,16 +42,13 @@ const read = async(payload,client,db_config)=>{
     }
 }
 
-const update = async (payload,client,db_config)=>{
+const update = async (payload)=>{
     try{
-        const dbName = db_config.dbName;
-        const dbCollection = db_config.dbCollection;
-
         //establish connection and config
         await client.connect();
 
-        const db = client.db(dbName);
-        const collection = db.collection(dbCollection);
+        const db = client.db(data.db_config.dbname);
+        const collection = db.collection(data.db_config.dbCollection);
 
         //update query
         const query = await collection.updateOne(payload[0],{$set:payload[1]});
@@ -65,25 +60,33 @@ const update = async (payload,client,db_config)=>{
     }
 }
 
-const deleted = async (payload,client,db_config)=>{
+const deleted = async (payload)=>{
     try{
-        const dbName = db_config.dbName;
-        const dbCollection = db_config.dbCollection;
-
         //establish connection
         await client.connect();
 
-        const db = client.db(dbName);
-        const collection = db.collection(dbCollection);
+        const db = client.db(data.db_config.dbname);
+        const collection = db.collection(data.db_config.dbCollection);
 
         //delete query
-        if(Array.isArray(payload,client,db_config)){
+        if(Array.isArray(payload,client,db)){
             const query = await collection.deleteMany(payload);
-            return query;
+
+            if(query.deletedCount === 0){
+                return "Not found";
+            }
+            else{
+                return query;
+            }
         }
         else{
             const query = await collection.deleteOne(payload);
-            return query;
+            if(query.deletedCount === 0){
+                return {Message:"Not found"};
+            }
+            else{
+                return query;
+            }
         }
     }
     catch(err){
